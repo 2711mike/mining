@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The News Compass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
+    <style>
+        .cluster-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #1f2937; /* Dark background for cards */
+        }
+        .cluster-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5); /* Darker shadow */
+        }
+        .cluster-card h2 {
+            font-size: 1.5rem;
+            line-height: 1.2;
+            color: #e5e7eb; /* Light text for headings */
+        }
+        .cluster-card p {
+            font-size: 1rem;
+            color: #9ca3af; /* Muted text for descriptions */
+        }
+        .source-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 1.25rem;
+            font-size: 0.875rem;
+            color: white;
+        }
+        .source-badge:nth-child(1) { background-color: #ef4444; }
+        .source-badge:nth-child(2) { background-color: #3b82f6; }
+        .source-badge:nth-child(3) { background-color: #10b981; }
+        .source-badge:nth-child(4) { background-color: #f59e0b; }
+        .source-badge:nth-child(5) { background-color: #8b5cf6; }
+        .explore-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background-image: linear-gradient(to right, #4b5563, #1f2937); /* Dark gradient */
+            color: white;
+        }
+        .explore-button:hover {
+            background-image: linear-gradient(to right, #374151, #111827); /* Darker gradient */
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Darker shadow */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        header h1 {
+            background: linear-gradient(to right, #8b5cf6, #6366f1); /* Gradient for heading */
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        header {
+            padding: 2rem;
+            border-radius: 1rem;
+            background-color: #111827; /* Dark background for header */
+            box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.5); /* Darker shadow */
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 font-inter">
+    <div class="container mx-auto px-4 py-16">
+        <header class="text-center">
+            <h1 class="text-4xl font-bold mb-4">The News Compass</h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">Camp Out for Breaking News.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for cluster_id, articles in clusters.items() %}
+            <a href="/cluster/{{ cluster_id }}" class="block">
+                <div class="cluster-card rounded-xl overflow-hidden shadow-lg h-full flex flex-col border border-gray-700">
+                    <div class="p-6 flex-grow">
+                        <h2 class="text-xl font-semibold mb-4 group-hover:text-indigo-400 transition-colors duration-300">{{ cluster_names[cluster_id] }}</h2>
+                        <p class="text-gray-400 mb-6">{{ articles|length }} articles</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for source in articles|map(attribute='source')|unique|list %}
+                            <span class="source-badge">{{ source }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="px-6 py-5 flex justify-end">
+                        <span class="explore-button flex items-center">
+                            Discover More <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-2">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The News Compass</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .cluster-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #1f2937; /* Dark background for cards */
+        }
+        .cluster-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Darker shadow */
+        }
+        .cluster-card h2 {
+            color: #e5e7eb; /* Light text for headings */
+        }
+        .cluster-card p {
+            color: #9ca3af; /* Muted text for descriptions */
+        }
+        .source-badge {
+            background-color: #374151; /* Dark badge background */
+            color: #d1d5db; /* Light text for badges */
+        }
+        .discover-more {
+            background-color: #111827; /* Dark footer background */
+            color: #60a5fa; /* Light blue text for footer */
+        }
+        .discover-more:hover {
+            color: #3b82f6; /* Brighter blue on hover */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <div class="container mx-auto px-4 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-indigo-400 mb-4">The News Compass</h1>
+            <p class="text-xl text-gray-400">Camp Out for Breaking News</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {% for cluster_id, articles in clusters.items() %}
+            <a href="/cluster/{{ cluster_id }}" class="block">
+                <div class="cluster-card rounded-lg overflow-hidden shadow-md h-full flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <h2 class="text-xl font-semibold mb-3">{{ cluster_names[cluster_id] }}</h2>
+                        <p class="mb-4">{{ articles|length }} articles</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for source in articles|map(attribute='source')|unique|list %}
+                            <span class="px-2 py-1 source-badge text-xs rounded-full">{{ source }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 discover-more">
+                        <span class="font-medium">Discover More →</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
